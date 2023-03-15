@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: local
+
+application:
+  aws:
+    sqsUrl: http://localhost:4566/000000000000/local-example
