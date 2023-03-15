@@ -1,0 +1,7 @@
+def dockerComposePath = System.getProperty('os.arch') == 'aarch64' ? 'docker/compose-arm.yaml' : 'docker/compose-intel.yaml'
+def localStackGatewayPorts = [4566]
+def localStackExtSvcPorts = (4510..4599).toList()
+dockerCompose {
+    useComposeFiles = [dockerComposePath]
+    tcpPortsToIgnoreWhenWaiting = localStackGatewayPorts + localStackExtSvcPorts
+}

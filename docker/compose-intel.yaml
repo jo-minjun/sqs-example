@@ -1,0 +1,24 @@
+services:
+  # https://docs.localstack.cloud/getting-started/installation/#docker-compose
+  # make Local SQS Queue
+  #   aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name {QUEUE_NAME}
+  # list Local SQS Queue
+  #   aws --endpoint-url=http://localhost:4566 sqs list-queues
+  # consume Local SQS Messages
+  #   aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url {QUEUE_URL}
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    environment:
+      - AWS_DEFAULT_REGION=ap-northeast-2
+      - SERVICES=sqs
+      - DEBUG=${DEBUG-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - INIT_SCRIPTS_PATH=/etc/localstack/init/ready.d
+    ports:
+      - '4510-4559:4510-4559' # external service port range
+      - '4566:4566'           # localStack gateway
+    volumes:
+      - $HOME/localstack_data:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./localstack.sh:/etc/localstack/init/ready.d/init.sh
